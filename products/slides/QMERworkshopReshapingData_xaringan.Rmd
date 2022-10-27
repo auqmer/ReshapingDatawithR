@@ -1,0 +1,119 @@
+---
+title: "Reshaping Data"
+subtitle: "Using `tidyr` and `data.table`"
+institute: "QMER Workshop"
+date: "Fall 2022 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    css: "qmer-xaringan.css"
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: '16:9'
+---
+
+
+```{r setup, include=FALSE}
+library(knitr)
+options(htmltools.dir.version = FALSE)
+opts_chunk$set(echo = FALSE, comment = NULL)
+```
+class: large
+## QMER: What we do
+
+QMER is a open learning community serving all of Auburn University by providing:
+
+* Support for Statistics, Project Management, and Workflow
+
+* Professional skills not taught in your courses
+
+* Research labs, teaching opportunities
+
+* Large scale public data sets
+
+---
+class: large
+## Outline of the Workshop
+
+* What is reshaping data and why do we need to do it?
+* Brief overview of ways to reshape data in R
+* Demonstration of wide to long with `tidyr`
+* Demonstration of wide to long with `data.table`
+* Real-life example with `data.table`
+
+---
+class: inverse middle center large
+
+# The What and Why of Reshaping Data
+
+---
+class: large
+## What is Reshaping Data
+
+* Reshaping data entails re-organizing data without changing changing the information represented.
+* Contrast this with manipulating data, which entails altering information or creating new variables.
+* Or contrast this with merging, which also adds information.
+
+---
+### Toy Example of Wide and Long Data
+```{r, echo=FALSE}
+library(tidyr)
+data.wide <- data.frame(id = 1:4, 
+                        math_k = c(25, 27, 21, 30),
+                        math_1st = c(31, 32, 28, 38),
+                        math_2nd = c(36, 34, 32, 48))
+
+data.long <- pivot_longer(data.wide, 
+                          cols = contains("math"),
+                          names_to = "grade",
+                          names_prefix = "math_",
+                          values_to = "math")
+data.long$grade <- factor(data.long$grade)
+```
+
+.pull-left[
+
+```{r}
+kable(data.wide, caption = "wide data", )
+```
+]
+
+.pull-right[
+
+
+```{r}
+kable(data.long, caption = "long data")
+```
+
+]
+
+---
+class:  large
+
+## Ways to Reshape Data in R
+
+* `reshape()` function in **base R**
+* `melt()` and `cast()` function in **reshape2** package
+* **tidyr** package from the tidyverse
+* **data.table** package has a faster version of `melt()`
+
+
+---
+class: large
+
+## Reshaping with **tidyr**
+
+[tidyr package documentation](https://tidyr.tidyverse.org/index.html)
+
+[tidyr pivoting tutorial](https://tidyr.tidyverse.org/articles/pivot.html)
+
+---
+class: large
+
+## Reshaping with `data.table`
+
+[data.table package documentation](https://rdatatable.gitlab.io/data.table/index.html)
+
+[data.table reshaping vignette](https://rdatatable.gitlab.io/data.table/index.html)

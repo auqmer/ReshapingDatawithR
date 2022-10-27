@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Reshaping Data</title>
+    <meta charset="utf-8" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link rel="stylesheet" href="qmer-xaringan.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Reshaping Data
+]
+.subtitle[
+## Using <code>tidyr</code> and <code>data.table</code>
+]
+.institute[
+### QMER Workshop
+]
+.date[
+### Fall 2022 (updated: 2022-10-27)
+]
+
+---
+
+
+
+
+class: large
+## QMER: What we do
+
+QMER is a open learning community serving all of Auburn University by providing:
+
+* Support for Statistics, Project Management, and Workflow
+
+* Professional skills not taught in your courses
+
+* Research labs, teaching opportunities
+
+* Large scale public data sets
+
+---
+class: large
+## Outline of the Workshop
+
+* What is reshaping data and why do we need to do it?
+* Brief overview of ways to reshape data in R
+* Demonstration of wide to long with `tidyr`
+* Demonstration of wide to long with `data.table`
+* Real-life example with `data.table`
+
+---
+class: inverse middle center large
+
+# The What and Why of Reshaping Data
+
+---
+class: large
+## What is Reshaping Data
+
+* Reshaping data entails re-organizing data without changing changing the information represented.
+* Contrast this with manipulating data, which entails altering information or creating new variables.
+* Or contrast this with merging, which also adds information.
+
+---
+### Toy Example of Wide and Long Data
+
+
+.pull-left[
+
+
+Table: wide data
+
+| id| math_k| math_1st| math_2nd|
+|--:|------:|--------:|--------:|
+|  1|     25|       31|       36|
+|  2|     27|       32|       34|
+|  3|     21|       28|       32|
+|  4|     30|       38|       48|
+]
+
+.pull-right[
+
+
+
+Table: long data
+
+| id|grade | math|
+|--:|:-----|----:|
+|  1|k     |   25|
+|  1|1st   |   31|
+|  1|2nd   |   36|
+|  2|k     |   27|
+|  2|1st   |   32|
+|  2|2nd   |   34|
+|  3|k     |   21|
+|  3|1st   |   28|
+|  3|2nd   |   32|
+|  4|k     |   30|
+|  4|1st   |   38|
+|  4|2nd   |   48|
+
+]
+
+---
+class:  large
+
+## Ways to Reshape Data in R
+
+* `reshape()` function in **base R**
+* `melt()` and `cast()` function in **reshape2** package
+* **tidyr** package from the tidyverse
+* **data.table** package has a faster version of `melt()`
+
+
+---
+class: large
+
+## Reshaping with **tidyr**
+
+[tidyr package documentation](https://tidyr.tidyverse.org/index.html)
+
+[tidyr pivoting tutorial](https://tidyr.tidyverse.org/articles/pivot.html)
+
+---
+class: large
+
+## Reshaping with `data.table`
+
+[data.table package documentation](https://rdatatable.gitlab.io/data.table/index.html)
+
+[data.table reshaping vignette](https://rdatatable.gitlab.io/data.table/index.html)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
